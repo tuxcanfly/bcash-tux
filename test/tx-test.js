@@ -636,8 +636,8 @@ describe('TX', function() {
 
     const ctx = sigopContext(input, witness, output);
 
-    assert.strictEqual(ctx.spend.getSigopsCost(ctx.view, flags), 0);
-    assert.strictEqual(ctx.fund.getSigopsCost(ctx.view, flags),
+    assert.strictEqual(ctx.spend.getSigopsCount(ctx.view, flags), 0);
+    assert.strictEqual(ctx.fund.getSigopsCount(ctx.view, flags),
       consensus.MAX_MULTISIG_PUBKEYS * consensus.WITNESS_SCALE_FACTOR);
   });
 
@@ -659,7 +659,7 @@ describe('TX', function() {
 
     const ctx = sigopContext(input, witness, output);
 
-    assert.strictEqual(ctx.spend.getSigopsCost(ctx.view, flags),
+    assert.strictEqual(ctx.spend.getSigopsCount(ctx.view, flags),
       2 * consensus.WITNESS_SCALE_FACTOR);
   });
 
@@ -678,9 +678,9 @@ describe('TX', function() {
       const output = Script.fromProgram(0, key.getKeyHash());
       const ctx = sigopContext(input, witness, output);
 
-      assert.strictEqual(ctx.spend.getSigopsCost(ctx.view, flags), 1);
+      assert.strictEqual(ctx.spend.getSigopsCount(ctx.view, flags), 1);
       assert.strictEqual(
-        ctx.spend.getSigopsCost(ctx.view, flags & ~Script.flags.VERIFY_WITNESS),
+        ctx.spend.getSigopsCount(ctx.view, flags & ~Script.flags.VERIFY_WITNESS),
         0);
     }
 
@@ -688,7 +688,7 @@ describe('TX', function() {
       const output = Script.fromProgram(1, key.getKeyHash());
       const ctx = sigopContext(input, witness, output);
 
-      assert.strictEqual(ctx.spend.getSigopsCost(ctx.view, flags), 0);
+      assert.strictEqual(ctx.spend.getSigopsCount(ctx.view, flags), 0);
     }
 
     {
@@ -699,7 +699,7 @@ describe('TX', function() {
       ctx.spend.inputs[0].prevout.index = 0xffffffff;
       ctx.spend.refresh();
 
-      assert.strictEqual(ctx.spend.getSigopsCost(ctx.view, flags), 0);
+      assert.strictEqual(ctx.spend.getSigopsCount(ctx.view, flags), 0);
     }
   });
 
@@ -721,7 +721,7 @@ describe('TX', function() {
 
     const ctx = sigopContext(input, witness, output);
 
-    assert.strictEqual(ctx.spend.getSigopsCost(ctx.view, flags), 1);
+    assert.strictEqual(ctx.spend.getSigopsCount(ctx.view, flags), 1);
   });
 
   it('should count sigops for p2wsh', () => {
@@ -742,9 +742,9 @@ describe('TX', function() {
 
     const ctx = sigopContext(input, witness, output);
 
-    assert.strictEqual(ctx.spend.getSigopsCost(ctx.view, flags), 2);
+    assert.strictEqual(ctx.spend.getSigopsCount(ctx.view, flags), 2);
     assert.strictEqual(
-      ctx.spend.getSigopsCost(ctx.view, flags & ~Script.flags.VERIFY_WITNESS),
+      ctx.spend.getSigopsCount(ctx.view, flags & ~Script.flags.VERIFY_WITNESS),
       0);
   });
 
@@ -769,7 +769,7 @@ describe('TX', function() {
 
     const ctx = sigopContext(input, witness, output);
 
-    assert.strictEqual(ctx.spend.getSigopsCost(ctx.view, flags), 2);
+    assert.strictEqual(ctx.spend.getSigopsCount(ctx.view, flags), 2);
   });
 
   it('should return addresses for standard inputs', () => {
