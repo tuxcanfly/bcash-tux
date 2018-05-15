@@ -141,7 +141,7 @@ describe('Block', function() {
       assert(tx.verify(view, flags));
       assert(!tx.hasWitness());
 
-      sigops += tx.getSigopsCost(view, flags);
+      sigops += tx.getSigopsCount(view, flags);
       reward += tx.getFee(view);
 
       view.addTX(tx, height);
@@ -352,7 +352,7 @@ describe('Block', function() {
 
         let count = 0;
         for (const tx of block.txs)
-          count += tx.getSigopsCost(view, flags);
+          count += tx.getSigopsCount(view, flags);
 
         assert.strictEqual(count, sigops);
         assert.strictEqual(block.getWeight(), weight);
